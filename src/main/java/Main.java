@@ -1,9 +1,13 @@
 package main.java;
 
+import java.awt.*;
+import java.io.IOException;
+
 public class Main
 {
     public static void main(String[] args)
+        throws IOException
     {
-        System.out.println("This is the etch-a-sketch project");
+        Etch e = new Etch();
     }
 }
