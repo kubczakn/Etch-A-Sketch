@@ -3,8 +3,7 @@ package main.java;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,14 +26,22 @@ public class Etch
 class MainPanel extends JPanel {
     private final BufferedImage img;
     private final MovingAdapter ma = new MovingAdapter();
-    private JLabel label = new JLabel();
+    private final KeyListener kl = new ArrowKey();
+    private final JLabel label = new JLabel();
 
     public MainPanel()
         throws IOException
     {
+        // Set focusable to be true
+        this.setFocusable(true);
+        this.requestFocusInWindow();
+
         // Set background color and size
         setBackground(Color.GRAY);
         setSize(800, 800);
+
+        // Add Key Listener to JFrame
+        addKeyListener(kl);
 
         // Set image
         img = ImageIO.read(new File("src/main/resources/images/etch_a_sketch.jpg"));
@@ -45,6 +52,7 @@ class MainPanel extends JPanel {
         label.addMouseListener(ma);
         label.addMouseMotionListener(ma);
         add(label);
+
     }
 
     // Logic for moving image
