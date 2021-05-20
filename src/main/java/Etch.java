@@ -95,8 +95,11 @@ class MainPanel extends JPanel {
 
     class CustomLabel extends JLabel {
         private KeyListener kl = new ArrowListener();
+        private MoveListener ml = new MoveListener();
         private int x;
         private int y;
+        private int loc_x;
+        private int loc_y;
 
         // TODO: Figure out how to clear points when shaken
 
@@ -106,7 +109,10 @@ class MainPanel extends JPanel {
 //            y = 400;
             x = -1;
             y = -1;
+            loc_x = -1;
+            loc_y = -1;
             addKeyListener(kl);
+            addComponentListener(ml);
 //            requestFocus();
         }
 
@@ -124,6 +130,31 @@ class MainPanel extends JPanel {
                 g2d.drawLine(curr_x, curr_y, curr_x, curr_y);
             }
         }
+
+        // Listener for component movement
+        private class MoveListener implements ComponentListener {
+            @Override public void componentResized(ComponentEvent e)
+            {
+
+            }
+
+            @Override public void componentMoved(ComponentEvent e)
+            {
+                points.clear();
+                repaint();
+            }
+
+            @Override public void componentShown(ComponentEvent e)
+            {
+
+            }
+
+            @Override public void componentHidden(ComponentEvent e)
+            {
+
+            }
+
+        }
         // Listener for arrow keys
         private class ArrowListener implements KeyListener {
             @Override public void keyTyped(KeyEvent e)
@@ -138,6 +169,11 @@ class MainPanel extends JPanel {
                     x = getX() - 100;
                     y = getY() - 120;
                 }
+                if (loc_x == -1) {
+                    loc_x = getX();
+                    loc_y = getY();
+                }
+
                 switch (key) {
                 case KeyEvent.VK_LEFT:
                     x -= 1;
