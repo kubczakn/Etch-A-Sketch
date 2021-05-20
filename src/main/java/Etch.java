@@ -115,6 +115,14 @@ class MainPanel extends JPanel {
             }
         }
 
+        private boolean checkXBounds() {
+            return x <= 235 && x >= 20;
+        }
+
+        private boolean checkYBounds() {
+            return y <= 178 && x >= 42;
+        }
+
         // Listener for component movement
         private class MoveListener implements ComponentListener {
             @Override public void componentResized(ComponentEvent e)
@@ -158,40 +166,34 @@ class MainPanel extends JPanel {
                     x = getX() - 100;
                     y = getY() - 120;
                 }
-                if (loc_x == -1) {
-                    loc_x = getX();
-                    loc_y = getY();
-                }
-
                 switch (key) {
                 case KeyEvent.VK_LEFT -> {
                     x -= 1;
-                    points.add(new Point(x, y));
-                    repaint();
+                    if (checkXBounds() && checkYBounds()) {
+                        points.add(new Point(x, y));
+                        repaint();
+                    }
                 }
                 case KeyEvent.VK_RIGHT -> {
                     x += 1;
-                    points.add(new Point(x, y));
-                                        System.out.println("Right!");
-                    repaint();
+                    if (checkXBounds() && checkYBounds()) {
+                        points.add(new Point(x, y));
+                        repaint();
+                    }
                 }
                 case KeyEvent.VK_UP -> {
                     y -= 1;
-                    points.add(new Point(x, y));
-                                        System.out.println("Up!");
-                    repaint();
+                    if (checkXBounds() && checkYBounds()) {
+                        points.add(new Point(x, y));
+                        repaint();
+                    }
                 }
                 case KeyEvent.VK_DOWN -> {
                     y += 1;
-                    points.add(new Point(x, y));
-                                        System.out.println("Down!");
-                    repaint();
-                }
-                // Test clearing
-                case KeyEvent.VK_0 -> {
-                    points.clear();
-                                        System.out.println("Zero!");
-                    repaint();
+                    if (checkXBounds() && checkYBounds()) {
+                        points.add(new Point(x, y));
+                        repaint();
+                    }
                 }
                 }
             }
