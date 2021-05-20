@@ -35,7 +35,7 @@ class MainPanel extends JPanel {
 //    private final KeyListener kl = new ArrowListener();
     private final CustomLabel label = new CustomLabel();
     private List<Point> points = new ArrayList<Point>();
-
+    private int counter;
 
     private int x;
     private int y;
@@ -51,6 +51,7 @@ class MainPanel extends JPanel {
 //        y = getHeight() / 2;
         x = 100;
         y = 100;
+        counter = 0;
 
         // Set focusable to be true
 //        this.setFocusable(true);
@@ -140,8 +141,13 @@ class MainPanel extends JPanel {
 
             @Override public void componentMoved(ComponentEvent e)
             {
-                points.clear();
-                repaint();
+                // Maybe make paint more transparent with shakes
+                ++counter;
+                if (counter == 250) {
+                    points.clear();
+                    repaint();
+                    counter = 0;
+                }
             }
 
             @Override public void componentShown(ComponentEvent e)
