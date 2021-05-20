@@ -7,6 +7,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Etch
 {
@@ -14,26 +16,29 @@ public class Etch
         throws IOException
     {
         // Create frame and panel
-        JFrame f= new JFrame("Etch-A-Sketch");
+        JFrame f = new JFrame("Etch-A-Sketch");
         f.add(new MainPanel());
         f.setLayout(null);
         f.setSize(800, 800);
         f.setVisible(true);
+
+        // Set closing operation
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
 
 // JPanel for image
 class MainPanel extends JPanel {
-    private final BufferedImage img;
+//    private final BufferedImage img;
     private final MovingAdapter ma = new MovingAdapter();
 //    private final KeyListener kl = new ArrowKey();
     private final KeyListener kl = new ArrowListener();
     private final JLabel label = new JLabel();
+    private List<Point> points = new ArrayList<Point>();
+
 
     private int x;
     private int y;
-    private int x2;
-    private int y2;
 
     public MainPanel()
         throws IOException
@@ -42,10 +47,10 @@ class MainPanel extends JPanel {
         setLayout(new GridBagLayout());
 
         // Set coordinates for painting
-        x = getWidth() / 2;
-        y = getHeight() / 2;
-        x2 = x;
-        y2 = y;
+//        x = getWidth() / 2;
+//        y = getHeight() / 2;
+        x = 100;
+        y = 100;
 
         // Set focusable to be true
         this.setFocusable(true);
@@ -59,14 +64,13 @@ class MainPanel extends JPanel {
         addKeyListener(kl);
 
         // Set image
-        img = ImageIO.read(new File("src/main/resources/images/etch_a_sketch.jpg"));
-        label.setIcon(new ImageIcon(img));
-        label.setSize(label.getPreferredSize());
-        label.addMouseListener(ma);
-        label.addMouseMotionListener(ma);
-        add(label);
+//        img = ImageIO.read(new File("src/main/resources/images/etch_a_sketch.jpg"));
+//        label.setIcon(new ImageIcon(img));
+//        label.setSize(label.getPreferredSize());
+//        label.addMouseListener(ma);
+//        label.addMouseMotionListener(ma);
+//        add(label);
         setVisible(true);
-
     }
 
     @Override
@@ -77,9 +81,13 @@ class MainPanel extends JPanel {
 
     public void drawLine(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
-        g2d.drawLine(x, y, x2, y2);
-        x = x2;
-        y = y2;
+        g2d.setColor(Color.CYAN);
+        for (Point point : points) {
+            int curr_x = point.getX();
+            int curr_y = point.getY();
+            g2d.drawLine(curr_x, curr_y, curr_x, curr_y);
+        }
+
     }
 
     // Listener for arrow keys
@@ -94,20 +102,28 @@ class MainPanel extends JPanel {
             int key = e.getKeyCode();
             switch (key) {
             case KeyEvent.VK_LEFT:
-                x2 -= 1;
+                x -= 1;
+                points.add(new Point(x, y));
                 System.out.println("Left!");
+                repaint();
                 break;
             case KeyEvent.VK_RIGHT:
-                x2 += 1;
+                x += 1;
+                points.add(new Point(x, y));
                 System.out.println("Right!");
+                repaint();
                 break;
             case KeyEvent.VK_UP:
-                y2 += 1;
+                y -= 1;
+                points.add(new Point(x, y));
                 System.out.println("Up!");
+                repaint();
                 break;
             case KeyEvent.VK_DOWN:
-                y2 -= 1;
+                y += 1;
+                points.add(new Point(x, y));
                 System.out.println("Down!");
+                repaint();
                 break;
             }
         }
@@ -144,8 +160,25 @@ class MainPanel extends JPanel {
             }
         }
     }
-}
 
-// TODO: Maybe create new object for BufferedImage for better mouse movements
+    // Point Class
+    class Point {
+        private int x;
+        private int y;
+
+        public Point(int x_in, int y_in) {
+            x = x_in;
+            y = y_in;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+    }
+}
 
 
