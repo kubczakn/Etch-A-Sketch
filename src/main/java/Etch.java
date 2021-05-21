@@ -17,8 +17,8 @@ public class Etch
     {
         // Create frame and panel
         JFrame f = new JFrame("Etch-A-Sketch");
-        f.add(new MainPanel());
         f.setLayout(null);
+        f.add(new MainPanel(), BorderLayout.CENTER);
         f.setSize(800, 800);
         f.setVisible(true);
 
@@ -82,22 +82,29 @@ class MainPanel extends JPanel {
 
 
     class CustomLabel extends JLabel {
-        private KeyListener kl = new ArrowListener();
-        private MoveListener ml = new MoveListener();
         private int x;
         private int y;
-        private int loc_x;
-        private int loc_y;
+
+        private boolean up;
+        private boolean down;
+        private boolean left;
+        private boolean right;
 
 
         private final List<Point> points = new ArrayList<>();
         public CustomLabel() {
             x = -1;
             y = -1;
-            loc_x = -1;
-            loc_y = -1;
+            KeyListener kl = new ArrowListener();
             addKeyListener(kl);
+            MoveListener ml = new MoveListener();
             addComponentListener(ml);
+
+            up = false;
+            down = false;
+            right = false;
+            left = false;
+
         }
 
         public void paintComponent(Graphics g) {
@@ -116,11 +123,30 @@ class MainPanel extends JPanel {
         }
 
         private boolean checkXBounds() {
-            return x <= 235 && x >= 20;
+            return x <= 235 && x >= 35;
         }
 
         private boolean checkYBounds() {
-            return y <= 178 && x >= 42;
+            return y <= 178 && y >= 42;
+        }
+
+        private void updatePaint() {
+            if (up) {
+                y -= 1;
+            }
+            if (down) {
+               y += 1;
+            }
+            if (left) {
+               x -= 1;
+            }
+            if (right) {
+               x += 1;
+            }
+            if (checkXBounds() && checkYBounds()) {
+                points.add(new Point(x, y));
+                repaint();
+            }
         }
 
         // Listener for component movement
@@ -168,39 +194,38 @@ class MainPanel extends JPanel {
                 }
                 switch (key) {
                 case KeyEvent.VK_LEFT -> {
-                    x -= 1;
-                    if (checkXBounds() && checkYBounds()) {
-                        points.add(new Point(x, y));
-                        repaint();
-                    }
+                    left = true;
                 }
                 case KeyEvent.VK_RIGHT -> {
-                    x += 1;
-                    if (checkXBounds() && checkYBounds()) {
-                        points.add(new Point(x, y));
-                        repaint();
-                    }
+                    right = true;
                 }
                 case KeyEvent.VK_UP -> {
-                    y -= 1;
-                    if (checkXBounds() && checkYBounds()) {
-                        points.add(new Point(x, y));
-                        repaint();
-                    }
+                    up = true;
                 }
                 case KeyEvent.VK_DOWN -> {
-                    y += 1;
-                    if (checkXBounds() && checkYBounds()) {
-                        points.add(new Point(x, y));
-                        repaint();
-                    }
+                    down = true;
                 }
                 }
+                updatePaint();
             }
 
             @Override public void keyReleased(KeyEvent e)
             {
-
+                int key = e.getKeyCode();
+                switch (key) {
+                case KeyEvent.VK_LEFT -> {
+                    left = false;
+                }
+                case KeyEvent.VK_RIGHT -> {
+                    right = false;
+                }
+                case KeyEvent.VK_UP -> {
+                    up = false;
+                }
+                case KeyEvent.VK_DOWN -> {
+                    down = false;
+                }
+                }
             }
         }
     }
