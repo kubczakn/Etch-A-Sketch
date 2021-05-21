@@ -22,6 +22,9 @@ public class Etch
         f.setSize(800, 800);
         f.setVisible(true);
 
+        // Turn fullscreen on or off
+        f.setResizable(false);
+
         // Set closing operation
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -64,21 +67,21 @@ class MainPanel extends JPanel {
         setVisible(true);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        drawLine(g);
-    }
-
-    public void drawLine(Graphics g) {
-        Graphics2D g2d = (Graphics2D)g;
-        g2d.setColor(Color.CYAN);
-        for (Point point : points) {
-            int curr_x = point.getX();
-            int curr_y = point.getY();
-            g2d.drawLine(curr_x, curr_y, curr_x, curr_y);
-        }
-    }
+//    @Override
+//    public void paintComponent(Graphics g) {
+//        super.paintComponent(g);
+//        drawLine(g);
+//    }
+//
+//    public void drawLine(Graphics g) {
+//        Graphics2D g2d = (Graphics2D)g;
+//        g2d.setColor(Color.CYAN);
+//        for (Point point : points) {
+//            double curr_x = point.getX();
+//            double curr_y = point.getY();
+//            g2d.drawLine(curr_x, curr_y, curr_x, curr_y);
+//        }
+//    }
 
 
     class CustomLabel extends JLabel {
@@ -115,9 +118,10 @@ class MainPanel extends JPanel {
         public void drawLine(Graphics g) {
             Graphics2D g2d = (Graphics2D)g;
             g2d.setColor(Color.BLACK);
+            g2d.setStroke(new BasicStroke(1.5F));
             for (Point point : points) {
-                int curr_x = point.getX();
-                int curr_y = point.getY();
+                int curr_x = (int)point.getX();
+                int curr_y = (int)point.getY();
                 g2d.drawLine(curr_x, curr_y, curr_x, curr_y);
             }
         }
@@ -233,13 +237,13 @@ class MainPanel extends JPanel {
     // Logic for moving image
     class MovingAdapter extends MouseAdapter
     {
-        private int x;
-        private int y;
         private boolean drag = false;
 
+        Point location;
+        MouseEvent pressed;
+
         public void mousePressed(MouseEvent e) {
-            x = e.getX();
-            y = e.getY();
+            pressed = e;
             if (e.getSource() == label) {
                 drag = true;
             }
@@ -251,30 +255,15 @@ class MainPanel extends JPanel {
 
         public void mouseDragged(MouseEvent e) {
             if (drag) {
-                label.setLocation(e.getXOnScreen() - x,
-                    e.getYOnScreen() - y);
+                location = label.getLocation(location);
+                int x = location.x - pressed.getX() + e.getX();
+                int y = location.y - pressed.getY() + e.getY();
+                label.setLocation(x, y);
             }
         }
     }
 
-    // Point Class
-    static class Point {
-        private final int x;
-        private final int y;
 
-        public Point(int x_in, int y_in) {
-            x = x_in;
-            y = y_in;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-    }
 }
 
 
