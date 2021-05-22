@@ -111,15 +111,33 @@ class MainPanel extends JPanel {
             }
         }
 
-        private boolean checkXBounds() {
-            return x <= 549 && x >= 84;
+//        private boolean checkXBounds() {
+//            return x <= 549 && x >= 84;
+//        }
+//
+//        private boolean checkYBounds() {
+//            return y <= 425 && y >= 88;
+//        }
+        private int checkXBounds() {
+            if (x > 549) {
+                return 549;
+            }
+            else if (x < 84) {
+                return 84;
+            }
+            return -1;
         }
 
-        private boolean checkYBounds() {
-            return y <= 425 && y >= 88;
+        private int checkYBounds() {
+            if (y > 425) {
+                return 425;
+            }
+            else if (y < 89) {
+                return 89;
+            }
+            return -1;
         }
 
-        // TODO: Better handle bounds when drawing
         private void updatePaint() {
             if (up) {
                 y -= 1;
@@ -133,10 +151,16 @@ class MainPanel extends JPanel {
             if (right) {
                x += 1;
             }
-            if (checkXBounds() && checkYBounds()) {
-                points.add(new Point(x, y));
-                repaint();
+            int tmp_x = checkXBounds();
+            int tmp_y = checkYBounds();
+            if (tmp_x != -1) {
+                x = tmp_x;
             }
+            if (tmp_y != -1) {
+                y = tmp_y;
+            }
+            points.add(new Point(x, y));
+            repaint();
         }
 
         // Listener for component movement
