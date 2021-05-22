@@ -19,7 +19,8 @@ public class Etch
         JFrame f = new JFrame("Etch-A-Sketch");
         f.setLayout(null);
         f.add(new MainPanel(), BorderLayout.CENTER);
-        f.setSize(800, 800);
+        f.setSize(1100, 900);
+//        f.setSize(800, 800);
         f.setVisible(true);
 
         // Turn fullscreen on or off
@@ -35,7 +36,6 @@ class MainPanel extends JPanel {
     private final BufferedImage img;
     private final MovingAdapter ma = new MovingAdapter();
     private final CustomLabel label = new CustomLabel();
-    private List<Point> points = new ArrayList<Point>();
     private int counter;
 
     private int x;
@@ -52,10 +52,12 @@ class MainPanel extends JPanel {
 
         // Set background color and size
         setBackground(Color.GRAY);
-        setSize(800, 800);
+        setSize(1100, 900);
+//        setSize(800, 800);
 
         // Set image
         img = ImageIO.read(new File("src/main/resources/images/etch_a_sketch.jpg"));
+//        img = ImageIO.read(new File("src/main/resources/images/test.jpg"));
         label.setIcon(new ImageIcon(img));
         label.setSize(label.getPreferredSize());
         label.addMouseListener(ma);
@@ -66,23 +68,6 @@ class MainPanel extends JPanel {
         add(label);
         setVisible(true);
     }
-
-//    @Override
-//    public void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        drawLine(g);
-//    }
-//
-//    public void drawLine(Graphics g) {
-//        Graphics2D g2d = (Graphics2D)g;
-//        g2d.setColor(Color.CYAN);
-//        for (Point point : points) {
-//            double curr_x = point.getX();
-//            double curr_y = point.getY();
-//            g2d.drawLine(curr_x, curr_y, curr_x, curr_y);
-//        }
-//    }
-
 
     class CustomLabel extends JLabel {
         private int x;
@@ -127,13 +112,14 @@ class MainPanel extends JPanel {
         }
 
         private boolean checkXBounds() {
-            return x <= 235 && x >= 35;
+            return x <= 549 && x >= 84;
         }
 
         private boolean checkYBounds() {
-            return y <= 178 && y >= 42;
+            return y <= 425 && y >= 88;
         }
 
+        // TODO: Better handle bounds when drawing
         private void updatePaint() {
             if (up) {
                 y -= 1;
@@ -193,9 +179,10 @@ class MainPanel extends JPanel {
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 if (x == -1) {
-                    x = getX() - 100;
-                    y = getY() - 120;
+                    x = getX() + 80;
+                    y = getY() + 50;
                 }
+//                System.out.printf("X: %d Y: %d\n", x, y);
                 switch (key) {
                 case KeyEvent.VK_LEFT -> {
                     left = true;
