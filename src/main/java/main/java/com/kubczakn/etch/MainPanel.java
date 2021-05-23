@@ -140,28 +140,30 @@ public class MainPanel extends JPanel
         }
 
         private void updatePaint() {
-            if (up) {
-                y -= 1;
+            for (int i = 0; i < 2; ++i) {
+                if (up) {
+                    y -= 1;
+                }
+                if (down) {
+                    y += 1;
+                }
+                if (left) {
+                    x -= 1;
+                }
+                if (right) {
+                    x += 1;
+                }
+                int tmp_x = checkXBounds();
+                int tmp_y = checkYBounds();
+                if (tmp_x != -1) {
+                    x = tmp_x;
+                }
+                if (tmp_y != -1) {
+                    y = tmp_y;
+                }
+                points.add(new Point(x, y));
+                repaint();
             }
-            if (down) {
-                y += 1;
-            }
-            if (left) {
-                x -= 1;
-            }
-            if (right) {
-                x += 1;
-            }
-            int tmp_x = checkXBounds();
-            int tmp_y = checkYBounds();
-            if (tmp_x != -1) {
-                x = tmp_x;
-            }
-            if (tmp_y != -1) {
-                y = tmp_y;
-            }
-            points.add(new Point(x, y));
-            repaint();
         }
 
         // Listener for component movement
