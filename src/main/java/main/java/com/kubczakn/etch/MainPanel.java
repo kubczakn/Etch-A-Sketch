@@ -95,7 +95,6 @@ public class MainPanel extends JPanel
                             e.printStackTrace();
                         }
                     }
-                    System.out.println(alpha);
                 }
             };
             Timer timer = new Timer("Timer");
