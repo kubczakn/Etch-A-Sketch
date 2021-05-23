@@ -1,4 +1,4 @@
-package main.java;
+package main.java.com.kubczakn.etch;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -7,12 +7,10 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
-// TODO: Have instructions fade out with timer and custom class
 // JPanel for image
 public class MainPanel extends JPanel
 {
@@ -36,7 +34,8 @@ public class MainPanel extends JPanel
         setSize(1100, 900);
 
         // Set image
-        img = ImageIO.read(new File("src/main/resources/images/etch_a_sketch.jpg"));
+        img = ImageIO.read(Objects.requireNonNull(
+            getClass().getClassLoader().getResourceAsStream("images/etch_a_sketch.jpg")));
         label.setIcon(new ImageIcon(img));
         label.setSize(label.getPreferredSize());
         label.addMouseListener(ma);

@@ -1,7 +1,5 @@
-package main.java;
+package main.java.com.kubczakn.etch;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 public class Main

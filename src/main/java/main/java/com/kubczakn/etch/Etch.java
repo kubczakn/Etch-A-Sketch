@@ -1,9 +1,9 @@
-package main.java;
+package main.java.com.kubczakn.etch;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import main.java.com.kubczakn.etch.MainPanel;
 
 // Main Etch Class
 public class Etch
