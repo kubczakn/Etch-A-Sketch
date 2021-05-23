@@ -53,6 +53,7 @@ public class MainPanel extends JPanel
     class CustomLabel extends JLabel {
         private int x;
         private int y;
+        private int alpha;
         private boolean up;
         private boolean down;
         private boolean left;
@@ -73,8 +74,11 @@ public class MainPanel extends JPanel
             left = false;
 
             // Add instructions
-            setText("<html>Use arrow keys to draw<br><br>Click and drag to erase<html>");
+//            setText("<html>Use arrow keys to draw<br><br>Click and drag to erase<html>");
+            alpha = 255;
+            setText("Use arrow keys to draw, click and drag to erase");
             setFont(new Font("Calibri", Font.BOLD, 20));
+            setForeground(new Color(0,0,0, alpha));
             setHorizontalTextPosition(JLabel.CENTER);
 
             // Set timer to fade away instructions
@@ -82,7 +86,17 @@ public class MainPanel extends JPanel
             {
                 @Override public void run()
                 {
-                    setFont(new Font("Calibri", Font.BOLD, 0));
+//                    setFont(new Font("Calibri", Font.BOLD, 0));
+                    while (alpha >= 0) {
+                        setForeground(new Color(0, 0, 0, alpha));
+                        alpha -= 15;
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println(alpha);
                 }
             };
             Timer timer = new Timer("Timer");
